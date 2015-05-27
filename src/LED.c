@@ -1,9 +1,5 @@
 #include "LED.h"
 
-void turnOnLED3(){
+int turnOnLED3(){}
 
-}
-
-void turnOffLED3(){
-    
-}
+int turnOffLED3(){}
