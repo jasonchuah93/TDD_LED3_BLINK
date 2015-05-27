@@ -13,7 +13,9 @@ int getCurrentTime(){
 }
 
 int delay(int delayCycle){
-	static int previousTime = 0;
-	while((getCurrentTime() - previousTime) < delayCycle);
-	previousTime = getCurrentTime();
+	int previousTime = 0;
+	if((getCurrentTime() - previousTime) < delayCycle){
+        return 1;
+    }else
+        return 0;
 }

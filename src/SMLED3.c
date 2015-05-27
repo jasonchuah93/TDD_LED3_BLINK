@@ -3,39 +3,45 @@
 #include "time.h"
 #include "LED.h"
 #include "button.h"
-#include "readButton.h"
+
 
 //State Diagram LED3
-int LED3_SM(State *state){
-	static int timer = 0;
-	int clock=0;
-	
-	static int previousTime = 0;
-	
-		switch(*state){
+int LED3_SM(State *state, int previousTime,int counter){
+    int target =0;
+    int button = pressedButton();
+	previousTime = 0;
+    target = counter + 1;
+    if(target >6 ){
+        *state = INITIAL;
+    }else{
+       switch(* state){
 			case INITIAL:
-                *state = STATEA;
-				break;
-			case STATEA:
-				if(timer != 0){
-				if(getCurrentTime()-previousTime >  two_hundred_millisec){
-					turnOnLED3();
+                if(button ==1 ){
+                    turnOnLED3();
+                    *state = Led3On;
+                }else
+                    *state = INITIAL;
+                    break;
+			case Led3Off:
+                 if(delay(100)){  
+                    turnOnLED3();
 					previousTime = getCurrentTime();
-					*state = STATEB;
-					timer -- ;
-				}
-				}
-				break;
-			case STATEB:
-				if(getCurrentTime()-previousTime >  two_hundred_millisec){
+                    *state = Led3On;
+                }  
+                 break;
+            case Led3On:
+                if(delay(100)){
 					turnOffLED3();
 					previousTime = getCurrentTime();
-					*state = FINAL;
-				}
-				break;
+                    *state = Led3Off;
+                }
+                break;
 			case FINAL:
-				*state = STATEA;
-				break;
+                break;
 		}
 		return *state;
+    }
+        
 }
+
+
